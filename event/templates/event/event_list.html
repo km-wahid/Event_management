@@ -1,0 +1,57 @@
+{% extends "event/dashboard.html" %}
+{% block title %}Event List{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-md p-6">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-700">Event List</h2>
+
+    <!--  Search  -->
+    <form method="GET" action="{% url 'event_list' %}" class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 mb-4">   
+        <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+            </div>
+            <input type="search" name="q" value="{{ query }}" class="block w-full p-4 pl-10 text-sm border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search events..." />
+            <button type="submit" class="absolute right-2.5 bottom-2.5 bg-blue-700 text-white px-4 py-2 rounded-lg">Search</button>
+        </div>
+    </form>
+
+    <!--  Event  -->
+    <table class="w-full border-collapse border border-gray-300">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="border p-2">Event Name</th>
+                <th class="border p-2">Category</th>
+                <th class="border p-2">Date</th>
+                <th class="border p-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr class="border">
+                <td class="p-2 text-center">{{ event.name }}</td>
+                <td class="p-3 text-center">{{ event.category.name }}</td>
+                <td class="p-2 text-center">{{ event.date }}</td>
+                <td class="p-2 text-center">
+                    <form action="{% url 'update_event' event.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="text-green-500">Edit | </button>
+                    </form>
+                   
+                    <form action="{% url 'delete_event' event.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-500">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center p-4 text-gray-500">No events found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

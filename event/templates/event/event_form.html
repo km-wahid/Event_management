@@ -1,0 +1,41 @@
+{% extends 'event/dashboard.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-10">
+    <h2 class="text-2xl font-semibold text-gray-700 text-center mb-6">Update Event</h2>
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        
+        <!-- Event  Fields -->
+        <div class="space-y-2">
+            {% for field in form %}
+                <div>
+                    <label class="block text-gray-600 font-medium">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-sm">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr class="my-4 border-gray-300">
+
+        <!-- CategoryFields -->
+        <div class="space-y-2">
+            {% for field in category_form %}
+                <div>
+                    <label class="block text-gray-600 font-medium">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-sm">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="w-full bg-rose-500 text-white p-3 rounded-lg shadow-md hover:bg-rose-600 transition">Create Event</button>
+    </form>
+</div>
+{% endblock %}
